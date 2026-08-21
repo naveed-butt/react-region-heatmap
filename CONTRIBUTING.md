@@ -34,6 +34,20 @@ npm run build          # tsup
 - **Presets are separate entry points.** Map data must never be reachable from
   the root import, or it lands in the bundle of everyone who does not use it.
 
+## Tests and the DOM
+
+Tests run in vitest's `node` environment by default. Most of this package is
+pure functions, and loading a DOM for them is both slower and a compatibility
+liability — jsdom drags in an `undici` that will not load on Node 20.
+
+If a test genuinely needs a DOM, opt that file in with a docblock at the top:
+
+```ts
+/** @vitest-environment jsdom */
+```
+
+Do not switch the global environment back to `jsdom` to make one file work.
+
 ## Style
 
 Prettier and ESLint are the arbiters — tabs, no semicolons, double quotes,
