@@ -1,0 +1,81 @@
+{
+	"name": "react-region-heatmap",
+	"version": "0.0.0",
+	"description": "Zero-dependency React choropleth heat map for any set of SVG regions. Bring your own geometry, or use the bundled US states map.",
+	"keywords": [
+		"react",
+		"heatmap",
+		"choropleth",
+		"map",
+		"svg",
+		"data-visualization",
+		"usa",
+		"us-states"
+	],
+	"license": "MIT",
+	"author": "Naveed Butt",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/naveed-butt/react-region-heatmap.git"
+	},
+	"bugs": {
+		"url": "https://github.com/naveed-butt/react-region-heatmap/issues"
+	},
+	"homepage": "https://github.com/naveed-butt/react-region-heatmap#readme",
+	"type": "module",
+	"sideEffects": false,
+	"files": [
+		"dist",
+		"NOTICE"
+	],
+	"main": "./dist/index.cjs",
+	"module": "./dist/index.js",
+	"types": "./dist/index.d.ts",
+	"exports": {
+		".": {
+			"types": "./dist/index.d.ts",
+			"import": "./dist/index.js",
+			"require": "./dist/index.cjs"
+		},
+		"./package.json": "./package.json"
+	},
+	"scripts": {
+		"build": "tsup",
+		"dev": "tsup --watch",
+		"typecheck": "tsc --noEmit",
+		"test": "vitest run --passWithNoTests",
+		"test:watch": "vitest --passWithNoTests",
+		"lint": "eslint .",
+		"format": "prettier --write .",
+		"format:check": "prettier --check .",
+		"prepublishOnly": "npm run build"
+	},
+	"peerDependencies": {
+		"react": ">=18"
+	},
+	"engines": {
+		"node": ">=20.19"
+	},
+	"publishConfig": {
+		"access": "public",
+		"provenance": true
+	},
+	"devDependencies": {
+		"@changesets/cli": "^3.0.1",
+		"@eslint/js": "^10.0.1",
+		"@testing-library/jest-dom": "^7.0.1",
+		"@testing-library/react": "^16.3.2",
+		"@types/react": "^19.2.18",
+		"@types/react-dom": "^19.2.4",
+		"eslint": "^10.9.0",
+		"eslint-plugin-react-hooks": "^7.1.1",
+		"jsdom": "^30.0.1",
+		"prettier": "^3.9.6",
+		"react": "^19.2.8",
+		"react-dom": "^19.2.8",
+		"tsup": "^8.5.1",
+		"typescript": "^5.9.3",
+		"typescript-eslint": "^8.67.0",
+		"vitest": "^4.1.11"
+	}
+}
