@@ -1,0 +1,66 @@
+name: Release
+
+on:
+  push:
+    branches: [main]
+
+# One release run at a time, and never cancelled mid-flight: a second push
+# queues behind the first rather than racing it to publish the same version.
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  release:
+    # Forks have no npm token and no business publishing.
+    if: github.repository == 'naveed-butt/react-region-heatmap'
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write # commit the version bump, push tags, create releases
+      pull-requests: write # open and update the version PR
+      id-token: write # npm provenance now, trusted publishing later
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          # Node 24 ships npm 11, which trusted publishing requires. Provenance
+          # alone would work on older npm, but there is no reason to publish
+          # from anything but the newest line.
+          node-version: 24
+          cache: npm
+          registry-url: https://registry.npmjs.org
+
+      - run: npm ci
+
+      # Publishing cannot be undone: npm refuses to reuse a version number even
+      # after an unpublish. So this job runs the gate itself rather than trusting
+      # that ci.yml happened to pass on the same commit.
+      - name: Verify
+        run: |
+          npm run format:check
+          npm run lint
+          npm run typecheck
+          npm test
+          npm run build
+
+      # With pending changesets this opens or updates a "version packages" PR.
+      # When that PR is merged there are none left, and it publishes instead.
+      - name: Version or publish
+        uses: changesets/action@v2
+        with:
+          version-script: npm run version-packages
+          publish-script: npm run release
+          commit-message: "chore: version packages"
+          pr-title: "chore: version packages"
+        env:
+          # First publish only. Once the package exists, configure trusted
+          # publishing on npmjs.com, delete this line and the NPM_TOKEN secret,
+          # and npm authenticates through id-token instead.
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_CONFIG_PROVENANCE: true

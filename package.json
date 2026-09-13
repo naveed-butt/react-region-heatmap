@@ -53,6 +53,8 @@
 		"lint": "eslint .",
 		"format": "prettier --write .",
 		"format:check": "prettier --check .",
+		"version-packages": "changeset version",
+		"release": "changeset publish",
 		"prepublishOnly": "npm run build"
 	},
 	"peerDependencies": {
