@@ -22,7 +22,7 @@ jobs:
     permissions:
       contents: write # commit the version bump, push tags, create releases
       pull-requests: write # open and update the version PR
-      id-token: write # npm provenance now, trusted publishing later
+      id-token: write # npm trusted publishing and provenance
 
     steps:
       - uses: actions/checkout@v5
@@ -59,8 +59,9 @@ jobs:
           commit-message: "chore: version packages"
           pr-title: "chore: version packages"
         env:
-          # First publish only. Once the package exists, configure trusted
-          # publishing on npmjs.com, delete this line and the NPM_TOKEN secret,
-          # and npm authenticates through id-token instead.
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          # No token. npm authenticates through this job's id-token permission,
+          # via the trusted publisher configured on npmjs.com for this workflow
+          # file, so renaming the file breaks publishing until that is updated.
+          # setup-node still sets a placeholder NODE_AUTH_TOKEN; that is expected,
+          # because npm tries OIDC before any token.
           NPM_CONFIG_PROVENANCE: true
