@@ -1,3 +1,4 @@
+import { warn } from "../internal/warn"
 import type { ColorMode, RampEasing } from "../types"
 import { clampChromaToGamut, hexToOklch, oklchToHex, type Oklch } from "./oklch"
 
@@ -11,17 +12,6 @@ import { clampChromaToGamut, hexToOklch, oklchToHex, type Oklch } from "./oklch"
  * blue reads as *empty*, not as dense, so the ramp climbs towards light instead.
  * Contrast against the page is the signal, not darkness.
  */
-
-declare const process: { env?: { NODE_ENV?: string } } | undefined
-
-const warn = (message: string): void => {
-	if (
-		typeof process !== "undefined" &&
-		process?.env?.NODE_ENV !== "production"
-	) {
-		console.warn(`[react-region-heatmap] ${message}`)
-	}
-}
 
 /** Linear interpolation. */
 const mix = (from: number, to: number, t: number): number =>

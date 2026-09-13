@@ -1,3 +1,4 @@
+import { warn } from "../internal/warn"
 import type { HeatScale, ScaleConfig, ZoneBasis } from "../types"
 
 /**
@@ -17,17 +18,6 @@ import type { HeatScale, ScaleConfig, ZoneBasis } from "../types"
  */
 
 export const DEFAULT_STEPS = 5
-
-// `process` is not declared without @types/node, and this package must not
-// depend on Node types to build. The guard below is the standard React pattern.
-declare const process: { env?: { NODE_ENV?: string } } | undefined
-
-const isDev = (): boolean =>
-	typeof process !== "undefined" && process?.env?.NODE_ENV !== "production"
-
-const warn = (message: string): void => {
-	if (isDev()) console.warn(`[react-region-heatmap] ${message}`)
-}
 
 /**
  * Values at or below zero never enter the scale.
