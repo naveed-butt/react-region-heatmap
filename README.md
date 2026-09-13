@@ -10,10 +10,8 @@ runtime dependencies at all. React is the only peer.
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](./LICENSE)
 
 > **Status: pre-release (`0.0.0`), not yet published to npm.**
-> The renderer, the scale engine and the colour engine all work today. The one
-> gap between this README and the package is the bundled US map: `getUsMap` and
-> the `react-region-heatmap/maps/us` entry point do not exist yet, so bring your
-> own geometry for now. Follow
+> Everything documented below is implemented and tested, including the bundled
+> US map. The first release will be `0.1.0`. Follow
 > [the milestones](https://github.com/naveed-butt/react-region-heatmap/milestones)
 > for progress.
 

@@ -2,7 +2,11 @@ import { defineConfig } from "tsup"
 
 export default defineConfig({
 	entry: {
-		index: "src/index.ts"
+		index: "src/index.ts",
+		// A separate entry rather than a re-export from index, so ~30 KB of path
+		// data never reaches a bundle that brings its own geometry. Tree shaking
+		// would drop it for ESM consumers, but CommonJS consumers get no such help.
+		"maps/us": "src/maps/us.ts"
 	},
 	format: ["esm", "cjs"],
 	dts: true,

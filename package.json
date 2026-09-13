@@ -42,7 +42,24 @@
 				"default": "./dist/index.cjs"
 			}
 		},
+		"./maps/us": {
+			"import": {
+				"types": "./dist/maps/us.d.ts",
+				"default": "./dist/maps/us.js"
+			},
+			"require": {
+				"types": "./dist/maps/us.d.cts",
+				"default": "./dist/maps/us.cjs"
+			}
+		},
 		"./package.json": "./package.json"
+	},
+	"typesVersions": {
+		"*": {
+			"maps/us": [
+				"./dist/maps/us.d.ts"
+			]
+		}
 	},
 	"scripts": {
 		"build": "tsup",
