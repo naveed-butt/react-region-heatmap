@@ -1,3 +1,5 @@
+export { RegionHeatMap } from "./render/RegionHeatMap"
+
 export {
 	bucketIndexFor,
 	bucketLowerBound,
@@ -10,6 +12,10 @@ export {
 
 export { deriveRamp, RAMP_LIGHTNESS } from "./color/deriveRamp"
 export type { DeriveRampOptions } from "./color/deriveRamp"
+
+export { resolveData } from "./data/resolveData"
+export { resolveView } from "./render/resolveView"
+export type { MapView, RegionView } from "./render/resolveView"
 
 export type {
 	ColorMode,
