@@ -1,6 +1,6 @@
 {
 	"name": "react-region-heatmap",
-	"version": "0.0.0",
+	"version": "0.1.0",
 	"description": "Zero-dependency React choropleth heat map for any set of SVG regions. Bring your own geometry, or use the bundled US states map.",
 	"keywords": [
 		"react",
