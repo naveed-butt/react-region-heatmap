@@ -101,6 +101,59 @@ By default those percentages measure the **value range**. Set
 `basis: "population"` to measure the **region count** instead, giving weighted
 quantiles.
 
+### Example: four equal zones
+
+Zones at 25%, 50%, 75% and 100%. Every zone scale starts at zero, so zero is
+not a breakpoint: pass `[25, 50, 75, 100]`, not `[0, 25, 50, 75, 100]`. A `0`
+would describe a zone with no width, so it is dropped with a development
+warning.
+
+```tsx
+import { RegionHeatMap } from "react-region-heatmap"
+import { getUsMap } from "react-region-heatmap/maps/us"
+
+const leads = {
+	TX: 268,
+	CA: 214,
+	NY: 163,
+	FL: 121,
+	IL: 88,
+	WA: 64,
+	CO: 40,
+	OR: 22,
+	UT: 9,
+	MT: 0
+}
+
+export const LeadsByQuarter = () => (
+	<RegionHeatMap
+		map={getUsMap()}
+		data={leads}
+		scale={{ type: "zones", breakpoints: [25, 50, 75, 100] }}
+		showLegend
+	/>
+)
+```
+
+The same breakpoints divide this data differently depending on `basis`:
+
+| Zone    | `"range"` (default) | States         | `"population"` | States     |
+| ------- | ------------------- | -------------- | -------------- | ---------- |
+| 0-25%   | 0-67                | WA, CO, OR, UT | 0-40           | CO, OR, UT |
+| 25-50%  | 67-134              | FL, IL         | 40-88          | IL, WA     |
+| 50-75%  | 134-201             | NY             | 88-163         | NY, FL     |
+| 75-100% | 201-268             | TX, CA         | 163-268        | TX, CA     |
+
+- **`"range"`** splits `0..268` into four equal slices, so shade tracks
+  magnitude: New York is alone in its zone because nothing else is close to it.
+- **`"population"`** puts the boundaries where a quarter, half and
+  three-quarters of the non-zero states fall, so the shades are used more
+  evenly, at the cost of shade no longer tracking magnitude.
+- Each zone includes its upper boundary, which is why Colorado, at exactly
+  `40`, is in the first population zone.
+- Montana's `0` is outside every zone and takes `zeroColor`. States missing
+  from `leads` take `missingColor`.
+
 ## Maps
 
 The US preset lives behind its own entry point so its ~30 KB of path data never
