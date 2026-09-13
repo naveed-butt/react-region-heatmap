@@ -2,18 +2,18 @@ import { defineConfig } from "vitest/config"
 
 export default defineConfig({
 	test: {
-		// The scale and colour engines are pure functions, so a DOM is dead
-		// weight here — and not free weight: jsdom pulls an undici that calls
-		// `webidl.util.markAsUncloneable`, which is missing on Node 20, so
-		// merely *loading* it broke CI on that version.
+		// The scale, colour and view engines are pure functions, so a DOM is
+		// dead weight for most of this suite - and not free weight, so it is not
+		// loaded globally. Component tests opt in per file with a docblock:
 		//
-		// Component tests added later need a DOM. Opt those files in
-		// individually with a docblock rather than paying for it globally:
+		//     /** @vitest-environment happy-dom */
 		//
-		//     /** @vitest-environment jsdom */
-		//
-		// If that reintroduces the Node 20 failure, the choice is happy-dom or
-		// dropping Node 20, which reached end of life in April 2026.
+		// happy-dom rather than jsdom because jsdom 30 declares
+		// `^22.22.2 || ^24.15.0 || >=26.0.0` and simply does not support Node 20,
+		// which this package still supports and still tests. That is the real
+		// reason the earlier attempt broke CI; the undici `markAsUncloneable`
+		// crash was the symptom. happy-dom declares `>=20.0.0` and keeps the
+		// whole matrix green.
 		environment: "node",
 		include: ["src/**/*.test.{ts,tsx}"]
 	}
